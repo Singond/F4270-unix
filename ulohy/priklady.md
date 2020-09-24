@@ -97,3 +97,36 @@ Pomocí `awk`u:
 ```
 awk 'BEGIN {FS=":"}; {print $3 ":" $1}' /etc/passwd
 ```
+
+## B3
+```
+tail -n+2 ip-by-country.csv | cut -d, -f6 | sort -u | wc -l
+```
+
+## B4
+Viz soubor `ulohy/b4.sh`:
+```
+#!/bin/bash
+
+# Select numeric code and country name from each language file,
+# then merge them into one list.
+tail -n+2 countrycodes_en.csv | awk 'BEGIN {FS=";"} {print $4 " " $1}' > tmp_countries
+tail -n+2 kodyzemi_cz.csv | awk 'BEGIN {FS=";"} {print $1 " " $4}' >> tmp_countries
+
+# Print the number of duplicate lines
+sort tmp_countries | uniq -d | cut -d" " -f2
+```
+
+Skript je nutno spustit v adresáři obsahujícím soubory `countrycodes_en.csv`
+a `kodyzemi_cz.csv`.
+```
+make test && cd test && bash ../ulohy/b4.sh
+```
+
+## B5
+Počet mezer na řádku ve výstupu `ls -l` je ovlivněn použitým formátem data,
+proto čas vypíšeme v předem určeném formátu (`iso`), abychom si byli jisti,
+že název souboru se nachází v osmém sloupci.
+```
+ls -l --time-style=iso | awk '$5 == 0 {print $8}'
+```
