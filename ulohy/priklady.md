@@ -75,3 +75,25 @@ Oktální zápis:
 ```
 touch file && chmod 754 file
 ```
+
+## B1
+Řešení je možné pomocí `cut`, `paste` a shellového skriptu, který vypíše
+dostatečný počet znaků `-`, ale je nepraktické, protože by zahrnovalo
+několik mezisouborů. Místo toho můžeme použít editor `sed`:
+```
+sed -E 's/^[^;]*;/-;/' calories.csv
+```
+Druhou možností je užít nástroje `awk`:
+```
+awk 'BEGIN {FS=";"; OFS=";"}; {$1="-"; print}' calories.csv
+```
+Obě tato řešení vypisují výsledek do standardního výstupu. Pro úpravu souboru
+je možné výsledek přesměrovat do dočasného souboru a tím pak nahradit původní
+(přesměrovávat rovnou do čteného souboru může vést k chybám); u řešení pomocí
+`sed`u je druhou možností použít přepínač `-i`.
+
+## B2
+Pomocí `awk`u:
+```
+awk 'BEGIN {FS=":"}; {print $3 ":" $1}' /etc/passwd
+```
