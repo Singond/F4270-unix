@@ -177,3 +177,37 @@ parametru. Výstup je uložen do souboru `apollo-list.tex`.
 make test && cd test && bash ../ulohy/c6.sh apollo
 ```
 Počet jedinečných slov v textu je 419.
+
+## C7
+Skript `ulohy/c7.sh` vypíše do standardního výstupu nejčastější slova s jejich
+četností:
+```
+#!/bin/bash
+input="$1"
+
+grep -o '[A-Za-z]*' "$input" | tr "[A-Z]" "[a-z]" | \
+sort | uniq -c | sort -k1,1rn | head -n20 | \
+awk '{print $2 " " $1}'
+```
+Definice grafu pro Gnuplot je v souboru `ulohy/c7.gp`:
+```
+set style data histograms
+set style histogram gap 1
+set style fill solid 2
+set xtics in rotate by 45 right
+set title "Výskyt nejčetnějších slov v textu"
+set ylabel "Počet výskytů"
+set key off
+
+set term pngcairo
+
+plot "/dev/stdin" u 2:xtic(1)
+```
+Gnuplot očekává data na standardním vstupu a obrázek v binárním formátu
+vypisuje do standardního výstupu:
+```
+make test && cd test && bash ../ulohy/c7.sh apollo | gnuplot -pc ../ulohy/c7.gp > wordcount.png
+```
+Výsledný graf je zde:
+
+![Graf četnosti slov](wordcount.png)
