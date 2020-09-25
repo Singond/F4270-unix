@@ -147,3 +147,33 @@ Primární skupina je v `/etc/passwd` uvedena ve čtvrtém sloupci.
 ```
 cut -d: /etc/passwd -f1,4 | grep ':200$' | cut -d: -f1
 ```
+
+## C6
+Implementace pomocí Bashe a Awku je v souboru `ulohy/c6.sh`:
+```
+#!/bin/bash
+input="$1"
+output="${1}-list.tex"
+
+cat <<EOF > "$output"
+\documentclass{article}
+\begin{document}
+Abecední seznam slov použitých v souboru \texttt{apollo}:
+\begin{itemize}
+EOF
+
+grep -o '[A-Za-z]*' "$input" | tr "[A-Z]" "[a-z]" | sort | uniq | \
+awk '{print "\\item{" $0 "}"}
+	END {print "\\end{itemize}\nPočet jedinečných slov: " NR "."}' \
+>> "$output"
+
+cat <<EOF >> "$output"
+\end{document}
+EOF
+```
+Skript je nutno spustit s názvem zpracovávaného souboru v prvním (a jediném)
+parametru. Výstup je uložen do souboru `apollo-list.tex`.
+```
+make test && cd test && bash ../ulohy/c6.sh apollo
+```
+Počet jedinečných slov v textu je 419.
