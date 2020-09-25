@@ -130,3 +130,20 @@ proto čas vypíšeme v předem určeném formátu (`iso`), abychom si byli jist
 ```
 ls -l --time-style=iso | awk '$5 == 0 {print $8}'
 ```
+
+## B6
+```
+find /usr/include -name "std*" ! -name "*.h"
+```
+
+## B7
+Opět bez tečkových souborů (`.*`), které v `/usr/bin` nepředpokládám.
+```
+ls /usr/bin | xargs -I% file '/usr/bin/%' | grep -F "POSIX shell script" | cut -d: -f1
+```
+
+## B8
+Primární skupina je v `/etc/passwd` uvedena ve čtvrtém sloupci.
+```
+cut -d: /etc/passwd -f1,4 | grep ':200$' | cut -d: -f1
+```
