@@ -149,6 +149,18 @@ Primární skupina je v `/etc/passwd` uvedena ve čtvrtém sloupci.
 cut -d: /etc/passwd -f1,4 | grep ':200$' | cut -d: -f1
 ```
 
+## C2
+Sed začne první cyklus načtením prvního řádku do pracovního prostoru
+(„pattern space“). Příkaz `N` načte do pracovního prostoru i další řádek,
+od prvního jej oddělí odřádkováním. Odřádkovací znak (`\n`) je poté
+vyměněn příkazem `s` za mezeru, čímž dojde ke spojení řádků.
+Jelikož ve skriptu nenásledují další příkazy, Sed vypíše takto upravený
+obsah pracovního prostoru do standardního výstupu, smaže pracovní prostor
+a začíná cyklus znovu s dalším dosud nepřečteným řádkem, tedy třetím:
+```
+sed 'N;s/\n/ /' file.txt
+```
+
 ## C6
 Implementace pomocí Bashe a Awku je v souboru `ulohy/c6.sh`:
 ```
