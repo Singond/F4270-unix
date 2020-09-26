@@ -139,7 +139,8 @@ find /usr/include -name "std*" ! -name "*.h"
 ## B7
 Opět bez tečkových souborů (`.*`), které v `/usr/bin` nepředpokládám.
 ```
-ls /usr/bin | xargs -I% file '/usr/bin/%' | grep -F "POSIX shell script" | cut -d: -f1
+ls /usr/bin | xargs -I% file '/usr/bin/%' | \
+grep -F "POSIX shell script" | cut -d: -f1
 ```
 
 ## B8
