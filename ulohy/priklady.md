@@ -120,7 +120,7 @@ sort tmp_countries | uniq -d | cut -d" " -f2
 Skript je nutno spustit v adresáři obsahujícím soubory `countrycodes_en.csv`
 a `kodyzemi_cz.csv`.
 ```
-make test && cd test && bash ../ulohy/b4.sh
+make testdir && cd test && bash ../ulohy/b4.sh
 ```
 
 ## B5
@@ -174,7 +174,7 @@ EOF
 Skript je nutno spustit s názvem zpracovávaného souboru v prvním (a jediném)
 parametru. Výstup je uložen do souboru `apollo-list.tex`.
 ```
-make test && cd test && bash ../ulohy/c6.sh apollo
+make testdir && cd test && bash ../ulohy/c6.sh apollo
 ```
 Počet jedinečných slov v textu je 419.
 
@@ -206,7 +206,8 @@ plot "/dev/stdin" u 2:xtic(1)
 Gnuplot očekává data na standardním vstupu a obrázek v binárním formátu
 vypisuje do standardního výstupu:
 ```
-make test && cd test && bash ../ulohy/c7.sh apollo | gnuplot -pc ../ulohy/c7.gp > wordcount.png
+make testdir && cd test && bash ../ulohy/c7.sh apollo | \
+gnuplot -pc ../ulohy/c7.gp > wordcount.png
 ```
 Výsledný graf je zde:
 
