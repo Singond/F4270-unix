@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Příklady do předmětu „F4270 UNIX, počítačové sítě“</title>
+	<link rel="stylesheet" href="unix.css">
+</head>
+<body>
+	<h1>Příklad D4</h1>
+	<h2>Zadání</h2>
+	<p>Úkolem je napsat awkový skript, který přeřádkuje daný text
+	na zadanou šířku. Plné zadání viz
+	<a href="http://monoceros.physics.muni.cz/~zbona/unix/zadani_unix.pdf"
+		target="_blank">zde</a>.
+	</p>
+
+	<h2>Řešení</h2>
+	<p>Požadovaná šířka výslednho textu má být předána jako proměnná pomocí
+	parametru <code>-v</code>. Pojmenujme tuto proměnnou <code>width</code>.
+	Ve skriptu zkontrolujeme, zdali je definována, a v případě, že není,
+	použijeme výchozí hodnotu 80:</p>
+	<pre class="listing">
+<code>if (width &lt; 1) {
+	totalwidth = 80
+} else {
+	totalwidth = width
+}</code></pre>
+
+	<p>Podle zadání mají sousledné neprázdné řádky vstupního textu tvořit
+	jediný odstavec ve výstupu. Změníme tedy chování Awku tak, aby za jeden
+	záznam nepovažoval jeden vstupní řádek, ale všechny řádky až do prvního
+	prázdného. Toho podle
+	<a href="https://www.gnu.org/software/gawk/manual/gawk.html#Multiple-Line"
+		target="_blank">dokumentace Awku</a>
+	docílíme nastavením speciální proměnné <code>RS</code> („record separator“)
+	na prázdný řetězec:</p>
+	<pre class="listing">
+<code>BEGIN {
+	RS=""
+}</code></pre>
+
+	<p>Oddělovačem jednotlivých „polí“ v záznamu ponechme bílé znaky,
+	každé slovo tak bude tvořit jedno pole. Awk tedy přečte celý vstupní
+	odstavec a rozdělí ho na jednotlivá slova očíslovaná od 1
+	do <code>NR</code>. Tuto posloupnost slov rozdělíme do řádků
+	jednoduchým cyklem uvedeným níže: K prvnímu slovu přidáváme další slova
+	a oddělujeme je mezerami. Jakmile by další přidané slovo prodloužilo
+	řádek nad stanovenou šířku, řádek vypíšeme do výstupu a slovem začneme
+	řádek další. Po ukončení cyklu vyčerpáním slov je nutno samostatným
+	příkazem vypsat poslední, nedokončený řádek.</p>
+	<pre class="listing">
+<code># Reflow each record (paragraph) to a maximum of totalwidth characters.
+{
+	# The contents of the current output line
+	line = ""
+
+	# Append fields (words) to the line as long as totalwidth is not exceeded
+	for (i = 1; i &lt;= NF; i++) {
+		if (line == "") {
+			# Always print at least one word on the line
+			line = $i
+		} else if ((length(line) + 1 + length($i)) &lt;= totalwidth) {
+			# Word will fit into the line: append it, separated by space
+			line = (line " " $i)
+		} else {
+			# Word will not fit into the current line:
+			# print the line and start over
+			print line
+			line = $i
+		}
+	}
+	# Print the last line
+	print line
+}</code></pre>
+
+	<p>Výše uvedené řešení nezachovává prázdné řádky mezi odstavci: Ty jsou
+	odstraněny Awkem v rámci čtení souboru a jeho dělení na záznamy ještě
+	před během výše uvedených příkazů. Proto před každým odstavcem kromě
+	prvního ještě přidáme prázdný řádek:</p>
+	<pre class="listing"><code>NR > 1 {print ""}</code></pre>
+
+	<p>Celý skript je k nahlédnutí
+	<a href="https://github.com/Singond/F4270-unix/blob/master/ulohy/d4.awk"
+		target="_blank">zde</a>.
+	</p>
+</body>
+</html>

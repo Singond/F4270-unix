@@ -225,3 +225,7 @@ gnuplot -pc ../ulohy/c7.gp > wordcount.png
 Výsledný graf je zde:
 
 ![Graf četnosti slov](wordcount.png)
+
+## D4
+Řešení je publikováno na stránce
+<https://is.muni.cz/www/jan.slany/unix.html?lang=cs>.
