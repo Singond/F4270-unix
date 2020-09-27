@@ -6,8 +6,13 @@ BEGIN {
 	# Keep the field separator to be whitespace. This will make each word
 	# a field.
 
-	# The maximum number of characters per line.
-	totalwidth = 80
+	# The maximum number of characters per line is given by the "width"
+	# variable from the command line. The default is 80.
+	if (width < 1) {
+		totalwidth = 80
+	} else {
+		totalwidth = width
+	}
 }
 
 # If this is not the first record (paragraph), insert a blank line
