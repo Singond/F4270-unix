@@ -228,4 +228,4 @@ Výsledný graf je zde:
 
 ## D4
 Řešení je publikováno na stránce
-<https://is.muni.cz/www/jan.slany/unix.html?lang=cs>.
+<https://is.muni.cz/www/jan.slany/unix.html>.
