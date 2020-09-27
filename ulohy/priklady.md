@@ -31,7 +31,7 @@ find /usr/include -maxdepth 1 -type f -regex '[^0-9].*[0-9].*' -exec cp '{}' ~ \
 ```
 
 ## A4
-Následující příkaz zjistí počet zalomení řádků (tedu počet znaků `0x0a`)
+Následující příkaz zjistí počet zalomení řádků (tedy počet znaků `0x0a`)
 v souboru `/etc/group`. Za předpokladu, že je i poslední řádek tohoto souboru
 ukončen zalomením, je výsledek shodný s počtem řádků v souboru:
 ```
